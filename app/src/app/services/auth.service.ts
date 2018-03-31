@@ -20,4 +20,11 @@ export class AuthService {
     return this.http.post(GlobalVariable.serverUrl + '/auth/login', credentials, { headers: headers })
       .map(res => res.json());
   }
+
+  isUserLoggedIn(token) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/auth/isUserLoggedIn', token, { headers: headers })
+      .map(res => res.json());
+  }
 }

@@ -66,4 +66,24 @@ router.post('/login', (req, res, next) => {
     }
 });
 
+router.post('/isUserLoggedIn', (req, res, next) => {
+    jwt.verify(req.body.token, config.jwtSecret, function (err, decoded) {
+        if (err) {
+            res.json({
+                result: false
+            })
+        } else {
+            if (decoded.loggedIn)
+                res.json({
+                    result: true,
+                })
+            else {
+                res.json({
+                    result: false,
+                })
+            }
+        }
+    });
+})
+
 module.exports = router;

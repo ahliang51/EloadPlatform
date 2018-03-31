@@ -4,18 +4,28 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from './Service/auth.service';
+import { AuthService } from './services/auth.service';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { HomeComponent } from './components/home/home.component';
+import { LoginRedirectGuard } from './guards/login';
+import { GenerateComponent } from './components/generate/generate.component';
+import { ExportComponent } from './components/export/export.component';
+import { ActivateComponent } from './components/activate/activate.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   // { path: 'login', component: LoginComponent, canActivate: [LoginRedirectGuard] },
-  // { path: 'brand', component: BrandHomeComponent, canActivate: [BrandLoginGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [LoginRedirectGuard] },
+  { path: 'generate', component: GenerateComponent, canActivate: [LoginRedirectGuard] },
+  { path: 'export', component: ExportComponent, canActivate: [LoginRedirectGuard] },
+  { path: 'activate', component: ActivateComponent, canActivate: [LoginRedirectGuard] },
   // { path: 'brand/listing/:id', component: BrandHomeDetailComponent, canActivate: [BrandLoginGuard] },
   // { path: 'brand/add-listing', component: BrandAddListingComponent, canActivate: [BrandLoginGuard] },
   // { path: 'chimer', component: ChimerHomeComponent, canActivate: [ChimerLoginGuard] },
@@ -29,7 +39,12 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    GenerateComponent,
+    ExportComponent,
+    ActivateComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -39,9 +54,10 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
-  providers: [AuthService],
+  providers: [AuthService, LoginRedirectGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
