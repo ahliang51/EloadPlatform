@@ -1,0 +1,18 @@
+.generateButton {
+  margin-top: 5%;
+}
+
+.row {
+  margin-top: 5%;
+}
+
+.side-by-side {
+  display: inline-block;
+}
+
+.validation {
+  color: red;
+  font-weight: bold;
+  /* margin-bottom: 0px; */
+  margin-bottom: 4%;
+}

@@ -1,6 +1,6 @@
 export let GlobalVariable = Object.freeze({
 
     // Local Development
-    serverUrl: 'http://localhost:3100',
+    serverUrl: 'http://localhost:3200',
 
 });

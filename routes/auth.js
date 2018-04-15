@@ -46,7 +46,8 @@ router.post('/login', (req, res, next) => {
     function generateToken(status, callback) {
         if (status == 0) {
             jwt.sign({
-                loggedIn: true
+                loggedIn: true,
+                username: req.body.username
             }, config.jwtSecret, {
                 expiresIn: '7d'
             }, function (err, token) {

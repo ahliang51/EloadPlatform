@@ -15,17 +15,14 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { HomeComponent } from './components/home/home.component';
 import { LoginRedirectGuard } from './guards/login';
 import { GenerateComponent } from './components/generate/generate.component';
-import { ExportComponent } from './components/export/export.component';
-import { ActivateComponent } from './components/activate/activate.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { BatchService } from './services/batch.service';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   // { path: 'login', component: LoginComponent, canActivate: [LoginRedirectGuard] },
   { path: 'home', component: HomeComponent, canActivate: [LoginRedirectGuard] },
   { path: 'generate', component: GenerateComponent, canActivate: [LoginRedirectGuard] },
-  { path: 'export', component: ExportComponent, canActivate: [LoginRedirectGuard] },
-  { path: 'activate', component: ActivateComponent, canActivate: [LoginRedirectGuard] },
   // { path: 'brand/listing/:id', component: BrandHomeDetailComponent, canActivate: [BrandLoginGuard] },
   // { path: 'brand/add-listing', component: BrandAddListingComponent, canActivate: [BrandLoginGuard] },
   // { path: 'chimer', component: ChimerHomeComponent, canActivate: [ChimerLoginGuard] },
@@ -42,8 +39,6 @@ const appRoutes: Routes = [
     LoginComponent,
     HomeComponent,
     GenerateComponent,
-    ExportComponent,
-    ActivateComponent,
     NavbarComponent
   ],
   imports: [
@@ -55,9 +50,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     SimpleNotificationsModule.forRoot(),
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
   ],
-  providers: [AuthService, LoginRedirectGuard],
+  providers: [AuthService, BatchService, LoginRedirectGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

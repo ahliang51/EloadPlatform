@@ -1,1 +1,50 @@
 <app-navbar></app-navbar>
+<div class="container">
+  <h2>Batch Table</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Batch No</th>
+        <th>Batch Name</th>
+        <th>Header</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+        <th>Expiry Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let batch of batchArray">
+        <td>
+          <button type="button" class="btn btn-primary ">
+            {{batch.BATCH_NO}}
+          </button>
+        </td>
+        <td>
+          {{batch.BATCH_NAME}}
+        </td>
+        <td>
+          {{batch.HEADER}}
+        </td>
+        <td>
+          {{batch.QUANTITY}}
+        </td>
+        <td>
+          {{batch.AMOUNT | currency}}
+        </td>
+        <td>
+          {{batch.EXPIRY_DATE | date : 'fullDate'}}
+        </td>
+        <td>
+          {{batch.STATUS_ID}}
+        </td>
+        <td>
+          <button type="button" [disabled]="!(batch.STATUS_ID == 'G')" class="btn btn-primary" (click)="onExport()">Export</button>
+        </td>
+        <td>
+          <button type="button" [disabled]="batch.STATUS_ID == 'G' || batch.STATUS_ID == 'A' " class="btn btn-primary ">Activate</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

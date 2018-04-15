@@ -11,10 +11,11 @@ let express = require('express'),
 
 
 //Specifies the port number
-let port = process.env.PORT || 3100;
+let port = process.env.PORT || 3200;
 
 //Import Routes
 let auth = require('./routes/auth');
+let batch = require('./routes/batch');
 
 //Body Parser Middleware
 app.use(bodyParser.json());
@@ -35,8 +36,14 @@ let connection = mysql.createConnection({
 connection.connect(error => {
     if (error) {
         console.error('error connecting: ' + error.stack);
+
         return;
     }
+
+    //Start the server 
+    app.listen(port, () => {
+        console.log('Server started on port' + port);
+    });
     console.log('connected as id ' + connection.threadId);
 
 })
@@ -49,19 +56,10 @@ app.use(function (req, res, next) {
 });
 
 app.use('/auth', auth);
+app.use('/batch', batch);
 
 app.post('/test', (req, res, next) => {
     connection.query('SELECT * FROM SYSUSER', (err, result) => {
         console.log(result)
     })
-});
-
-
-
-
-
-
-//Start the server 
-app.listen(port, () => {
-    console.log('Server started on port' + port);
 });
