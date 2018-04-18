@@ -16,7 +16,7 @@
     <tbody>
       <tr *ngFor="let batch of batchArray">
         <td>
-          <button type="button" class="btn btn-primary ">
+          <button type="button" class="btn btn-primary" (click)="onSelectBatchNo(batch.BATCH_NO)">
             {{batch.BATCH_NO}}
           </button>
         </td>
@@ -33,18 +33,26 @@
           {{batch.AMOUNT | currency}}
         </td>
         <td>
-          {{batch.EXPIRY_DATE | date : 'fullDate'}}
+          {{batch.EXPIRY_DATE | date : 'full'}}
         </td>
         <td>
           {{batch.STATUS_ID}}
         </td>
         <td>
-          <button type="button" [disabled]="!(batch.STATUS_ID == 'G')" class="btn btn-primary" (click)="onExport()">Export</button>
+          <button type="button" [disabled]="!(batch.STATUS_ID == 'G')" class="btn btn-primary" (click)="onExport(template)">Export</button>
         </td>
         <td>
           <button type="button" [disabled]="batch.STATUS_ID == 'G' || batch.STATUS_ID == 'A' " class="btn btn-primary ">Activate</button>
         </td>
+        <ng-template #template>
+          <div class="modal-body text-center">
+            <p>Are u sure?</p>
+            <button type="button" class="btn btn-default" (click)="onConfirm(batch.BATCH_NO)">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="onDecline()">No</button>
+          </div>
+        </ng-template>
       </tr>
     </tbody>
   </table>
+
 </div>

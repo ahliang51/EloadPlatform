@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <h2>Voucher Table</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Batch No</th>
+        <th>Serial No</th>
+        <th>Pin No</th>
+        <th>Activate Date</th>
+        <th>Expiry Date</th>
+        <th>Last Use Date</th>
+        <th>Value</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let voucher of voucherArray">
+        <td>
+          {{voucher.BATCH_NO}}
+        </td>
+        <td>
+          {{voucher.SERIAL_NO}}
+        </td>
+        <td>
+          {{voucher.PIN_NO}}
+        </td>
+        <td>
+          {{voucher.ACTIVATE_DATE | date : 'full'}}
+        </td>
+        <td>
+          {{voucher.EXPIRY_DATE | date : 'full'}}
+        </td>
+        <td>
+          {{voucher.LAST_USE_DATE | date : 'full'}}
+        </td>
+        <td>
+          {{voucher.VALUE}}
+        </td>
+        <td>
+          {{voucher.STATUS}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

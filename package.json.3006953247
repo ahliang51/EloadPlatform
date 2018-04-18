@@ -1,0 +1,22 @@
+{
+  "name": "e-loadplatform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/cdk": "^5.2.5",
+    "@angular/material": "^5.2.5",
+    "async": "^2.6.0",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^8.2.0",
+    "mysql": "^2.15.0"
+  }
+}

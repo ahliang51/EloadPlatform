@@ -22,7 +22,31 @@ export class BatchService {
   generate(credentials) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(GlobalVariable.serverUrl + '/generate/generate-batch', credentials, { headers: headers })
+    return this.http.post(GlobalVariable.serverUrl + '/batch/generate-batch', credentials, { headers: headers })
+      .map(res => res.json());
+  }
+
+  exportBatch(batchNo) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/export-batch', batchNo, { headers: headers })
+      .map(res => res.json());
+  }
+
+  listVoucher(batchNo) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/list-voucher', batchNo, { headers: headers })
+      .map(res => res.json());
+  }
+
+  viewTransactions(startDate, endDate) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/view-transactions', {
+      startDate: startDate,
+      endDate: endDate
+    }, { headers: headers })
       .map(res => res.json());
   }
 }

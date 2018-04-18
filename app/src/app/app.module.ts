@@ -6,7 +6,43 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 
+import 'hammerjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+} from '@angular/material';
+import { ModalModule } from 'ngx-bootstrap';
 import { AuthService } from './services/auth.service';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,18 +53,16 @@ import { LoginRedirectGuard } from './guards/login';
 import { GenerateComponent } from './components/generate/generate.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { BatchService } from './services/batch.service';
+import { VoucherComponent } from './voucher/voucher.component';
+import { ViewComponent } from './components/view/view.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   // { path: 'login', component: LoginComponent, canActivate: [LoginRedirectGuard] },
   { path: 'home', component: HomeComponent, canActivate: [LoginRedirectGuard] },
   { path: 'generate', component: GenerateComponent, canActivate: [LoginRedirectGuard] },
-  // { path: 'brand/listing/:id', component: BrandHomeDetailComponent, canActivate: [BrandLoginGuard] },
-  // { path: 'brand/add-listing', component: BrandAddListingComponent, canActivate: [BrandLoginGuard] },
-  // { path: 'chimer', component: ChimerHomeComponent, canActivate: [ChimerLoginGuard] },
-  // { path: 'chimer/jobs', component: ChimerJobComponent, canActivate: [ChimerLoginGuard] },
-  // { path: 'payment', component: PaymentComponent },
-  // { path: 'instagram', component: InstagramComponent },
+  { path: 'home/voucher/:batchNo', component: VoucherComponent, canActivate: [LoginRedirectGuard] },
+  { path: 'view', component: ViewComponent },
   { path: '**', redirectTo: '/' }
 ];
 
@@ -39,7 +73,9 @@ const appRoutes: Routes = [
     LoginComponent,
     HomeComponent,
     GenerateComponent,
-    NavbarComponent
+    NavbarComponent,
+    VoucherComponent,
+    ViewComponent
   ],
   imports: [
     BrowserModule,
@@ -47,10 +83,43 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     NgbModule.forRoot(),
     FormsModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     HttpModule,
     SimpleNotificationsModule.forRoot(),
     Ng4LoadingSpinnerModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [AuthService, BatchService, LoginRedirectGuard],
   bootstrap: [AppComponent]

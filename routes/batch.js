@@ -73,5 +73,31 @@ router.get('/list-batch', (req, res, next) => {
         })
 });
 
+router.post('/export-batch', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`CALL WEB_EXPORT_BATCH(?)`, req.body.batchNo,
+        (err, result, fields) => {
+            res.json(result)
+        })
+});
+
+router.post('/list-voucher', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`SELECT * FROM VOUCHERS WHERE BATCH_NO = (?)`, req.body.batchNo,
+        (err, result, fields) => {
+            res.json(result)
+        })
+});
+
+router.post('/view-transactions', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`CALL WEB_QUERY_TRANSACTION(?,?)`, [req.body.startDate, req.body.endDate],
+        (err, result, fields) => {
+            console.log(result)
+            res.json(result)
+        })
+});
+
+
 
 module.exports = router;
