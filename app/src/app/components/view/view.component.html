@@ -1,66 +1,75 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col-sm">
+    <div class="col">
       <mat-form-field *ngIf="true">
         <input matInput [matDatepicker]="start" placeholder="Choose a date" [formControl]="startDate">
         <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
         <mat-datepicker #start disabled="false"></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="col-sm">
+    <div class="col">
       <mat-form-field>
         <input matInput [matDatepicker]="end" placeholder="End Date" [formControl]="endDate">
         <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
         <mat-datepicker #end disabled="false"></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="col-sm">
+
+    <div class="col">
+      <input class="form-control" type="text" placeholder="Account Number">
+    </div>
+
+    <div class="col">
+      <input class="form-control" type="text" placeholder="Phone Number">
+    </div>
+
+    <div class="col">
       <button type="button" (click)="onFilter()" class="btn btn-primary">Filter</button>
     </div>
+
+    <div class="row">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Transaction Date</th>
+            <th>Serial Number</th>
+            <th>From Mobile</th>
+            <th>Access Code</th>
+            <th>Amount</th>
+            <th>Batch Number</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactionArray">
+            <td>
+              {{transaction.TRX_ID}}
+            </td>
+            <td>
+              {{transaction.TRX_DATE}}
+            </td>
+            <td>
+              {{transaction.SERIAL_NO}}
+            </td>
+            <td>
+              {{transaction.FROM_MOBILE}}
+            </td>
+            <td>
+              {{transaction.ACCOUNT_NO}}
+            </td>
+            <td>
+              {{transaction.AMOUNT}}
+            </td>
+            <td>
+              {{transaction.BATCH_NO}}
+            </td>
+            <td>
+              {{transaction.RESULT}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="row">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Transaction ID</th>
-          <th>Transaction Date</th>
-          <th>Serial Number</th>
-          <th>From Mobile</th>
-          <th>Account Number</th>
-          <th>Amount</th>
-          <th>Batch Number</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let transaction of transactionArray">
-          <td>
-            {{transaction.TRX_ID}}
-          </td>
-          <td>
-            {{transaction.TRX_DATE}}
-          </td>
-          <td>
-            {{transaction.SERIAL_NO}}
-          </td>
-          <td>
-            {{transaction.FROM_MOBILE}}
-          </td>
-          <td>
-            {{transaction.ACCOUNT_NO}}
-          </td>
-          <td>
-            {{transaction.AMOUNT}}
-          </td>
-          <td>
-            {{transaction.BATCH_NO}}
-          </td>
-          <td>
-            {{transaction.RESULT}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>

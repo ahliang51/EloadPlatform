@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="input-group input-group-lg access-code">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Access Code</span>
+          <input type="text" class="form-control" [formControl]="accessCode" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+        </div>
+      </div>
+      <div class="input-group input-group-lg access-code">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Phone Number</span>
+          <input type="text" class="form-control" [formControl]="phoneNumber" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <button type="button" class="btn btn-primary access-code" (click)="onFind()">Find</button>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-bordered migrate-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Store Credit</th>
+          <th>Access Code</th>
+          <th>Orders</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {{firstName}}
+          </td>
+          <td>
+            {{email}}
+          </td>
+          <td>
+            {{userPhoneNumber}}
+          </td>
+          <td>
+            {{storeCredit}}
+          </td>
+          <td>
+            {{userAccessCode}}
+          </td>
+          <td>
+
+
+            {{orders}}
+            <button [attr.data-target]="'#' + order" class="btn btn-primary container" data-toggle="collapse" *ngFor="let order of Object.keys(ordersObject)">
+              Order ID : {{order}}
+              <div [attr.id]="order" class="collapse">
+                <div class="row" *ngFor="let item of ordersObject[order];let last = last">
+                  <div class="container">
+                    <p>
+                      {{item.name}} X {{item.quantity}}
+                    </p>
+                    <div *ngIf="last">
+                      <p>
+                        Date Created : {{item.date_created | date:'fullDate'}}
+                      </p>
+                      <p>
+                        Total : ${{item.total | currency}}
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

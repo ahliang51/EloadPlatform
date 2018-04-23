@@ -55,6 +55,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { BatchService } from './services/batch.service';
 import { VoucherComponent } from './voucher/voucher.component';
 import { ViewComponent } from './components/view/view.component';
+import { MigrateComponent } from './components/migrate/migrate.component';
+import { MigrateService } from './services/migrate.service';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -63,6 +65,7 @@ const appRoutes: Routes = [
   { path: 'generate', component: GenerateComponent, canActivate: [LoginRedirectGuard] },
   { path: 'home/voucher/:batchNo', component: VoucherComponent, canActivate: [LoginRedirectGuard] },
   { path: 'view', component: ViewComponent },
+  { path: 'migrate', component: MigrateComponent },
   { path: '**', redirectTo: '/' }
 ];
 
@@ -75,7 +78,8 @@ const appRoutes: Routes = [
     GenerateComponent,
     NavbarComponent,
     VoucherComponent,
-    ViewComponent
+    ViewComponent,
+    MigrateComponent
   ],
   imports: [
     BrowserModule,
@@ -121,7 +125,7 @@ const appRoutes: Routes = [
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule.forRoot()
   ],
-  providers: [AuthService, BatchService, LoginRedirectGuard],
+  providers: [AuthService, BatchService, LoginRedirectGuard, MigrateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
