@@ -9,6 +9,15 @@ let express = require('express'),
     jwt = require('jsonwebtoken'),
     bigCommerce, bigCommerceV3, connection;
 
+// Group by Function
+Array.prototype.groupBy = function (prop) {
+    return this.reduce(function (groups, item) {
+        const val = item[prop]
+        groups[val] = groups[val] || []
+        groups[val].push(item)
+        return groups
+    }, {})
+}
 
 router.post('/retrieve-user', (req, res, next) => {
     //Retrieve bigCommerce Connection
@@ -34,17 +43,33 @@ router.post('/retrieve-user', (req, res, next) => {
 
     function retrieveUserInfo(callback) {
         let callbackExist = false;
-        bigCommerce.get('/customers').then(data => {
-            for (let user of data) {
-                if (user.notes == req.body.userInfo.accessCode) {
-                    callbackExist = true;
-                    callback(null, user)
+        if (req.body.userInfo.accessCode) {
+            bigCommerce.get('/customers').then(data => {
+                for (let user of data) {
+                    if (user.notes == req.body.userInfo.accessCode) {
+                        callbackExist = true;
+                        callback(null, user)
+                    }
                 }
-            }
-            if (!callbackExist) {
-                callback("No such user")
-            }
-        })
+                if (!callbackExist) {
+                    callback("No such user")
+                }
+            })
+        } else {
+            bigCommerce.get('/customers').then(data => {
+                console.log(data)
+                for (let user of data) {
+                    if (user.phone == req.body.userInfo.phoneNumber) {
+                        callbackExist = true;
+                        callback(null, user)
+                    }
+                }
+                if (!callbackExist) {
+                    callback("No such user")
+                }
+            })
+        }
+
     }
 
     function retrieveOrders(result, callback) {
@@ -86,22 +111,16 @@ router.post('/retrieve-user', (req, res, next) => {
                         productInfoArray.push(temp)
                     }
                 }
-                console.log(productInfoArray)
-                result.orderInfo = productInfoArray.groupBy('order_id');
-                // result.orderInfo.push(productInfoArray.groupBy('order_id'))
+                if (productInfoArray.length > 0) {
+                    //Group by Order Id
+                    result.orderInfo = productInfoArray.groupBy('order_id');
+                    // Sort Order Id by descending
+                    console.log(result.orderInfo)
+                }
                 callback(null, result)
-                console.log(productInfoArray.groupBy('order_id'))
             });
 
-        // Group by Function
-        Array.prototype.groupBy = function (prop) {
-            return this.reduce(function (groups, item) {
-                const val = item[prop]
-                groups[val] = groups[val] || []
-                groups[val].push(item)
-                return groups
-            }, {})
-        }
+
         // for (let order of orderInfo) {
         //     bigCommerce.get(order.products.resource).then(data => {
         //         console.log(data)

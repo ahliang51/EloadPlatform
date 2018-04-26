@@ -10,7 +10,7 @@ export class AuthService {
 
   getIpAddress() {
     return this.http
-      .get('http://freegeoip.net/json/?callback')
+      .get('http://api.ipstack.com/check?access_key=048b660a761a090c3672566714e43094&format=1')
       .map(res => res.json());
   }
 

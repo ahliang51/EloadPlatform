@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngIf="firstName">
           <td>
             {{firstName}}
           </td>
@@ -42,17 +42,24 @@
           <td>
             {{userPhoneNumber}}
           </td>
-          <td>
-            {{storeCredit}}
+          <td *ngIf="storeCredit.value">
+            <div class="container">
+              <div class="row">
+                <div class="col-6">
+                  <input class="form-control" type="text" [formControl]="storeCredit">
+                </div>
+                <div class="col-6">
+                  <button type="button" class="btn btn-primary" (click)="onEditStoreCredit(template)">Update</button>
+                </div>
+              </div>
+            </div>
           </td>
           <td>
             {{userAccessCode}}
           </td>
           <td>
-
-
             {{orders}}
-            <button [attr.data-target]="'#' + order" class="btn btn-primary container" data-toggle="collapse" *ngFor="let order of Object.keys(ordersObject)">
+            <button [attr.data-target]="'#' + order" class="btn btn-primary container" data-toggle="collapse" *ngFor="let order of Object.keys(ordersObject).slice().reverse()">
               Order ID : {{order}}
               <div [attr.id]="order" class="collapse">
                 <div class="row" *ngFor="let item of ordersObject[order];let last = last">
@@ -65,7 +72,7 @@
                         Date Created : {{item.date_created | date:'fullDate'}}
                       </p>
                       <p>
-                        Total : ${{item.total | currency}}
+                        Total : {{item.total | currency}}
                       </p>
                     </div>
                   </div>
@@ -74,6 +81,13 @@
               </div>
             </button>
           </td>
+          <ng-template #template>
+            <div class="modal-body text-center">
+              <p>Are u sure?</p>
+              <button type="button" class="btn btn-default" (click)="onConfirm()">Yes</button>
+              <button type="button" class="btn btn-primary" (click)="onDecline()">No</button>
+            </div>
+          </ng-template>
         </tr>
       </tbody>
     </table>

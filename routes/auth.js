@@ -35,7 +35,9 @@ router.post('/login', (req, res, next) => {
     });
 
     function queryDatabase(callback) {
+        console.log(req.body)
         connection.query(`CALL WEB_CHECK_LOGIN(?,?,?)`, [req.body.username, req.body.password, req.body.ipAddress], (err, result, fields) => {
+            JSON.stringify(result)
             let status = JSON.parse(JSON.stringify(result[0][0])).STATUS;
             console.log(status);
             callback(null, status)
