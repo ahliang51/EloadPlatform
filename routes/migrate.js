@@ -7,7 +7,8 @@ let express = require('express'),
     http = require('http'),
     config = require('../config/config'),
     jwt = require('jsonwebtoken'),
-    bigCommerce, bigCommerceV3, connection;
+    moment = require('moment'),
+    db, bigCommerce, bigCommerceV3, connection;
 
 // Group by Function
 Array.prototype.groupBy = function (prop) {
@@ -129,13 +130,50 @@ router.post('/retrieve-user', (req, res, next) => {
     }
 });
 
-router.post('/test', (req, res, next) => {
+router.post('/update-store-credit', (req, res, next) => {
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
+    console.log(req.body)
 
-    bigCommerce.get('/orders/124/products').then(data => {
-        res.json(data)
-    });
+    bigCommerce.put('/customers/' + req.body.userInfo.customerEcommerceId, {
+            store_credit: req.body.userInfo.storeCredit
+        }).then(data => {
+            res.json({
+                success: true
+            })
+        })
+        .catch(err => {
+            if (err) {
+                res.json({
+                    success: false
+                })
+            }
+        });
+
+})
+
+
+router.post('/test', (req, res, next) => {
+    //Retrieve bigCommerce Connection
+    db = req.db;
+
+    let timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
+    console.log(timeStamp)
+
+    db.collection('users').update({
+        customerEcommerceId: 48
+    }, {
+        $set: {
+            "migrateTransactions.1": {
+                timeStamp: timeStamp,
+                originalStoreCredit: "40",
+                updatedStoreCredit: '10',
+            }
+        }
+    }).then(result => {
+        console.log(result)
+        res.json(result)
+    })
 
 })
 

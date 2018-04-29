@@ -15,4 +15,11 @@ export class MigrateService {
       .map(res => res.json());
   }
 
+  updateStoreCredit(userInfo) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/migrate/update-store-credit', { userInfo: userInfo }, { headers: headers })
+      .map(res => res.json());
+  }
+
 }

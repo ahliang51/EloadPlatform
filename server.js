@@ -8,6 +8,7 @@ let express = require('express'),
     jwt = require('jsonwebtoken'),
     BigCommerce = require('node-bigcommerce'),
     config = require('./config/config'),
+    MongoClient = require('mongodb').MongoClient,
     app = express(),
     db;
 
@@ -60,15 +61,20 @@ connection.connect(error => {
         return;
     }
 
-    //Start the server 
-    app.listen(port, () => {
-        console.log('Server started on port' + port);
-    });
-    console.log('connected as id ' + connection.threadId);
+    MongoClient.connect(config.database, (err, database) => {
+        if (err) return console.log(err)
+        db = database.db('big-commerce');
 
+        //Start the server 
+        app.listen(port, () => {
+            console.log('Server started on port' + port);
+        });
+        console.log('connected as id ' + connection.threadId);
+    });
 })
 
 app.use(function (req, res, next) {
+    req.db = db;
     req.connection = connection;
     req.bigCommerce = bigCommerce;
     req.bigCommerceV3 = bigCommerceV3;

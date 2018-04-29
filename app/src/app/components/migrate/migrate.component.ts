@@ -41,6 +41,27 @@ export class MigrateComponent implements OnInit {
   onConfirm(): void {
     console.log(this.storeCredit.value);
     console.log(this.customerEcommerceId);
+
+    this.migrateService.updateStoreCredit({
+      storeCredit: this.storeCredit.value,
+      customerEcommerceId: this.customerEcommerceId
+    }).subscribe(data => {
+      console.log(data);
+      this.updateStoreCreditModal.hide();
+      if (data.success) {
+        this.notificationService.success('Success', 'Store Credit has been updated', {
+          timeOut: 5000,
+          pauseOnHover: false,
+          clickToClose: true
+        });
+      } else {
+        this.notificationService.error('Error', 'Update Fail', {
+          timeOut: 5000,
+          pauseOnHover: false,
+          clickToClose: true
+        });
+      }
+    });
   }
 
   onDecline(): void {
