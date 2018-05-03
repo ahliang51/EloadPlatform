@@ -33,6 +33,13 @@ export class BatchService {
       .map(res => res.json());
   }
 
+  printBatch(batchNo) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/print-batch', batchNo, { headers: headers })
+      .map(res => res.json());
+  }
+
   listVoucher(batchNo) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

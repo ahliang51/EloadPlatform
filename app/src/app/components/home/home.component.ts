@@ -4,6 +4,9 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Router } from '@angular/router';
+import { ExcelServiceService } from '../../services/excel-service.service';
+import { NotificationsService } from 'angular2-notifications';
+
 
 @Component({
   selector: 'app-home',
@@ -18,7 +21,9 @@ export class HomeComponent implements OnInit {
   constructor(private batchService: BatchService,
     private spinnerService: Ng4LoadingSpinnerService,
     private modalService: BsModalService,
-    private router: Router
+    private router: Router,
+    private excelService: ExcelServiceService,
+    private notificationService: NotificationsService,
   ) { }
 
   ngOnInit() {
@@ -30,19 +35,62 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onExport(template: TemplateRef<any>) {
+  onExportTemplate(template: TemplateRef<any>) {
     this.exportModal = this.modalService.show(template, { class: 'modal-sm' });
   }
 
-  onConfirm(batchNo): void {
+  onPrintTemplate(template: TemplateRef<any>) {
+    this.exportModal = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  onActivateTemplate(template: TemplateRef<any>) {
+    this.exportModal = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  onConfirmExport(batchNo): void {
     this.exportModal.hide();
     console.log(batchNo);
     const batch = {
       batchNo: batchNo
     };
     this.batchService.exportBatch(batch).subscribe(data => {
-      console.log(data);
+      const batchArray = [];
+      for (const temp of data[0]) {
+        const tempObject = {
+          serialNumber: temp.SERIAL_NO,
+          pinNumber: temp.PIN_NO,
+          value: temp.VALUE,
+          expiryDate: temp.EXPIRY_DATE
+        };
+        batchArray.push(tempObject);
+      }
+      this.excelService.exportAsExcelFile(batchArray, batchNo);
     });
+  }
+
+  onConfirmPrint(batchNo): void {
+    this.exportModal.hide();
+    this.spinnerService.show();
+    const batch = {
+      batchNo: batchNo
+    };
+    this.batchService.printBatch(batch).subscribe(data => {
+      console.log(data);
+      this.spinnerService.hide();
+      this.notificationService.success(
+        'Success',
+        data[0].STATUS,
+        {
+          timeOut: 3000,
+          pauseOnHover: false,
+          clickToClose: true
+        }
+      );
+    });
+  }
+
+  onConfirmActivate(batchNo): void {
+    this.exportModal.hide();
   }
 
   onDecline(): void {

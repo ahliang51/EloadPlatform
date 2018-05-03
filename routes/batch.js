@@ -81,6 +81,14 @@ router.post('/export-batch', (req, res, next) => {
         })
 });
 
+router.post('/print-batch', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`CALL WEB_PRINT_BATCH(?)`, req.body.batchNo,
+        (err, result, fields) => {
+            res.json(result)
+        })
+});
+
 router.post('/list-voucher', (req, res, next) => {
     connection = req.connection;
     connection.query(`SELECT * FROM VOUCHERS WHERE BATCH_NO = (?)`, req.body.batchNo,

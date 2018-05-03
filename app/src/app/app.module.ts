@@ -57,6 +57,7 @@ import { VoucherComponent } from './voucher/voucher.component';
 import { ViewComponent } from './components/view/view.component';
 import { MigrateComponent } from './components/migrate/migrate.component';
 import { MigrateService } from './services/migrate.service';
+import { ExcelServiceService } from './services/excel-service.service';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -125,7 +126,7 @@ const appRoutes: Routes = [
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule.forRoot()
   ],
-  providers: [AuthService, BatchService, LoginRedirectGuard, MigrateService],
+  providers: [AuthService, BatchService, LoginRedirectGuard, MigrateService, ExcelServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
