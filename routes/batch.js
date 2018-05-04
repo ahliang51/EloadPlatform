@@ -89,6 +89,14 @@ router.post('/print-batch', (req, res, next) => {
         })
 });
 
+router.post('/activate-batch', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`CALL WEB_ACTIVATE_BATCH(?)`, req.body.batchNo,
+        (err, result, fields) => {
+            res.json(result)
+        })
+});
+
 router.post('/list-voucher', (req, res, next) => {
     connection = req.connection;
     connection.query(`SELECT * FROM VOUCHERS WHERE BATCH_NO = (?)`, req.body.batchNo,
@@ -99,7 +107,17 @@ router.post('/list-voucher', (req, res, next) => {
 
 router.post('/view-transactions', (req, res, next) => {
     connection = req.connection;
-    connection.query(`CALL WEB_QUERY_TRANSACTION(?,?)`, [req.body.startDate, req.body.endDate],
+    console.log(req.body)
+    connection.query(`CALL WEB_QUERY_TRANSACTION(?,?,?,?)`, [req.body.startDate, req.body.endDate, req.body.accessCode, req.body.phoneNumber],
+        (err, result, fields) => {
+            console.log(result)
+            res.json(result)
+        })
+});
+
+router.post('/test', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`SELECT * FROM TRANSACTIONS`,
         (err, result, fields) => {
             console.log(result)
             res.json(result)

@@ -40,6 +40,13 @@ export class BatchService {
       .map(res => res.json());
   }
 
+  activateBatch(batchNo) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/activate-batch', batchNo, { headers: headers })
+      .map(res => res.json());
+  }
+
   listVoucher(batchNo) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -47,12 +54,14 @@ export class BatchService {
       .map(res => res.json());
   }
 
-  viewTransactions(startDate, endDate) {
+  viewTransactions(startDate, endDate, accessCode, phoneNumber) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(GlobalVariable.serverUrl + '/batch/view-transactions', {
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      accessCode,
+      phoneNumber
     }, { headers: headers })
       .map(res => res.json());
   }

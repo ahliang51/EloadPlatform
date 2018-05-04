@@ -29,10 +29,11 @@
           <input type="text" class="form-control" aria-label="Large" required="required" formControlName="amount" aria-describedby="inputGroup-sizing-sm">
         </div>
         <div class="input-group input-group-lg">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-lg">Expiry Date</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Large" required="required" formControlName="expiryDate" aria-describedby="inputGroup-sizing-sm">
+          <mat-form-field>
+            <input matInput [matDatepicker]="expiry" placeholder="Expiry Date" [formControl]="expiryDate">
+            <mat-datepicker-toggle matSuffix [for]="expiry"></mat-datepicker-toggle>
+            <mat-datepicker #expiry disabled="false"></mat-datepicker>
+          </mat-form-field>
         </div>
       </div>
       <button type="button" type="submit" [disabled]="!generateForm.valid" class="btn btn-primary generateButton">Generate</button>
@@ -53,9 +54,6 @@
       </div>
       <div *ngIf="generateForm.controls.amount.invalid">
         <div *ngIf="generateForm.controls.amount.errors.required" class="side-by-side validation">*Amount is required</div>
-      </div>
-      <div *ngIf="generateForm.controls.expiryDate.invalid">
-        <div *ngIf="generateForm.controls.expiryDate.errors.required" class="side-by-side validation">*Expiry date is required</div>
       </div>
     </div>
   </div>

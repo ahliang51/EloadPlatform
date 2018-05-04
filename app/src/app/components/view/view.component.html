@@ -17,11 +17,11 @@
     </div>
 
     <div class="col">
-      <input class="form-control" type="text" placeholder="Account Number">
+      <input class="form-control" type="text" placeholder="Access Code" [formControl]="accessCode">
     </div>
 
     <div class="col">
-      <input class="form-control" type="text" placeholder="Phone Number">
+      <input class="form-control" type="text" placeholder="Phone Number" [formControl]="phoneNumber">
     </div>
 
     <div class="col">
@@ -48,7 +48,7 @@
               {{transaction.TRX_ID}}
             </td>
             <td>
-              {{transaction.TRX_DATE}}
+              {{transaction.TRX_DATE | date:'full' }}
             </td>
             <td>
               {{transaction.SERIAL_NO}}
@@ -57,7 +57,7 @@
               {{transaction.FROM_MOBILE}}
             </td>
             <td>
-              {{transaction.ACCOUNT_NO}}
+              {{transaction.ACCESS_CODE}}
             </td>
             <td>
               {{transaction.AMOUNT}}

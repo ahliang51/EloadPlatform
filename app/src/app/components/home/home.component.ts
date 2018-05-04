@@ -29,8 +29,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.spinnerService.show();
     this.batchService.listBatch().subscribe(data => {
-      console.log(data);
-      this.batchArray = data;
+      this.batchArray = data.sort();
       this.spinnerService.hide();
     });
   }
@@ -77,9 +76,10 @@ export class HomeComponent implements OnInit {
     this.batchService.printBatch(batch).subscribe(data => {
       console.log(data);
       this.spinnerService.hide();
+      this.ngOnInit();
       this.notificationService.success(
         'Success',
-        data[0].STATUS,
+        (data[0])[0].STATUS,
         {
           timeOut: 3000,
           pauseOnHover: false,
@@ -91,6 +91,23 @@ export class HomeComponent implements OnInit {
 
   onConfirmActivate(batchNo): void {
     this.exportModal.hide();
+    this.spinnerService.show();
+    const batch = {
+      batchNo: batchNo
+    };
+    this.batchService.activateBatch(batch).subscribe(data => {
+      this.spinnerService.hide();
+      this.ngOnInit();
+      this.notificationService.success(
+        'Success',
+        (data[0])[0].STATUS,
+        {
+          timeOut: 5000,
+          pauseOnHover: false,
+          clickToClose: true
+        }
+      );
+    });
   }
 
   onDecline(): void {
