@@ -10,7 +10,7 @@ export class BatchService {
 
   getIpAddress() {
     return this.http
-      .get('http://freegeoip.net/json/?callback')
+      .get('http://api.ipstack.com/check?access_key=048b660a761a090c3672566714e43094&format=1')
       .map(res => res.json());
   }
 
@@ -54,14 +54,24 @@ export class BatchService {
       .map(res => res.json());
   }
 
-  viewTransactions(startDate, endDate, accessCode, phoneNumber) {
+  viewTransactions(startDate, endDate, accessCode, phoneNumber, pinNumber) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(GlobalVariable.serverUrl + '/batch/view-transactions', {
       startDate: startDate,
       endDate: endDate,
       accessCode,
-      phoneNumber
+      phoneNumber,
+      pinNumber
+    }, { headers: headers })
+      .map(res => res.json());
+  }
+
+  viewPinDetails(pinNumber) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/view-pin-detail', {
+      pinNumber: pinNumber
     }, { headers: headers })
       .map(res => res.json());
   }

@@ -108,21 +108,37 @@ router.post('/list-voucher', (req, res, next) => {
 router.post('/view-transactions', (req, res, next) => {
     connection = req.connection;
     console.log(req.body)
-    connection.query(`CALL WEB_QUERY_TRANSACTION(?,?,?,?)`, [req.body.startDate, req.body.endDate, req.body.accessCode, req.body.phoneNumber],
+    connection.query(`CALL WEB_QUERY_TRANSACTION(?,?,?,?,?)`, [req.body.startDate, req.body.endDate, req.body.accessCode, req.body.phoneNumber, req.body.pinNumber],
         (err, result, fields) => {
             console.log(result)
             res.json(result)
         })
 });
 
-router.post('/test', (req, res, next) => {
+router.post('/view-pin-detail', (req, res, next) => {
     connection = req.connection;
-    connection.query(`SELECT * FROM TRANSACTIONS`,
+    connection.query(`SELECT * FROM VOUCHERS INNER JOIN BATCH ON VOUCHERS.BATCH_NO = BATCH.BATCH_NO  WHERE PIN_NO = (?)`, req.body.pinNumber,
         (err, result, fields) => {
-            console.log(result)
-            res.json(result)
+            let resultArray = [];
+            resultArray.push(result)
+            res.json(resultArray)
         })
 });
+
+router.post('/test', (req, res, next) => {
+    // webAccessLog("Admin", "102.123.1.1", "qwdqwd", req.connection)
+});
+
+// function webAccessLog(Admin, ipAddress, description, connection) {
+//     console.log(Admin)
+//     console.log(ipAddress)
+//     console.log(description)
+//     console.log(connection)
+//     connection.query(`CALL WEB_ACCESS_LOG(?,?,?)`, [Admin, ipAddress, description],
+//         (err, result, fields) => {
+//             console.log(result)
+//         })
+// }
 
 
 

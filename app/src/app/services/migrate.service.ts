@@ -8,6 +8,12 @@ export class MigrateService {
 
   constructor(private http: Http) { }
 
+  getIpAddress() {
+    return this.http
+      .get('http://api.ipstack.com/check?access_key=048b660a761a090c3672566714e43094&format=1')
+      .map(res => res.json());
+  }
+
   retrieveUser(credentials) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

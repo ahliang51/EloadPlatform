@@ -6,6 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Router } from '@angular/router';
 import { ExcelServiceService } from '../../services/excel-service.service';
 import { NotificationsService } from 'angular2-notifications';
+import { mergeMap } from 'rxjs/operators';
 
 
 @Component({
@@ -28,8 +29,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.spinnerService.show();
+
     this.batchService.listBatch().subscribe(data => {
-      this.batchArray = data.sort();
+      this.batchArray = data;
       this.spinnerService.hide();
     });
   }
@@ -70,9 +72,30 @@ export class HomeComponent implements OnInit {
   onConfirmPrint(batchNo): void {
     this.exportModal.hide();
     this.spinnerService.show();
+
+    // this.batchService.getIpAddress().pipe(mergeMap(ipAddress =>
+    //   this.batchService.printBatch({
+    //     batchNo: batchNo,
+    //     ipAddress: ipAddress
+    //   }))).subscribe(data => {
+    //     console.log(data);
+    //     this.spinnerService.hide();
+    //     this.ngOnInit();
+    //     this.notificationService.success(
+    //       'Success',
+    //       (data[0])[0].STATUS,
+    //       {
+    //         timeOut: 3000,
+    //         pauseOnHover: false,
+    //         clickToClose: true
+    //       }
+    //     );
+    //   });
+
     const batch = {
-      batchNo: batchNo
+      batchNo: batchNo,
     };
+
     this.batchService.printBatch(batch).subscribe(data => {
       console.log(data);
       this.spinnerService.hide();

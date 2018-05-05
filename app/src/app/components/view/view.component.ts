@@ -40,6 +40,7 @@ export class ViewComponent implements OnInit {
   endDate = new FormControl({ value: moment(), disabled: true });
   accessCode = new FormControl();
   phoneNumber = new FormControl();
+  pinNumber = new FormControl();
   transactionArray = [];
 
   constructor(private batchService: BatchService) { }
@@ -56,8 +57,15 @@ export class ViewComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const startDate = `${this.startDate.value._d.getFullYear()}-${this.startDate.value._d.getMonth() + 1}-${this.startDate.value._d.getDate()}`;
     const endDate = `${this.endDate.value._d.getFullYear()}-${this.endDate.value._d.getMonth() + 1}-${this.endDate.value._d.getDate()}`;
+
+    // if (this.pinNumber.value) {
+    //   this.batchService.viewPinDetails(this.pinNumber.value).subscribe(result => {
+    //     this.transactionArray = result[0];
+    //     console.log(result[0]);
+    //   });
+    // } else {
     // tslint:disable-next-line:max-line-length
-    this.batchService.viewTransactions(startDate, endDate, this.accessCode.value ? this.accessCode.value : '', this.phoneNumber.value ? this.phoneNumber.value : '').subscribe(data => {
+    this.batchService.viewTransactions(startDate, endDate, this.accessCode.value ? this.accessCode.value : '', this.phoneNumber.value ? this.phoneNumber.value : '', this.pinNumber.value ? this.pinNumber.value : '').subscribe(data => {
       console.log(data[0].sort((a, b) => {
         if (a.TRX_ID > b.TRX_ID) {
           return -1;
@@ -65,9 +73,17 @@ export class ViewComponent implements OnInit {
           return 1;
         }
       }));
-
       this.transactionArray = data[0];
+      console.log(this.transactionArray);
+      console.log(this.transactionArray.length);
+      if (this.transactionArray.length === 0) {
+        this.batchService.viewPinDetails(this.pinNumber.value).subscribe(result => {
+          this.transactionArray = result[0];
+          console.log(result[0]);
+        });
+      }
     });
+    // }
   }
 }
 
