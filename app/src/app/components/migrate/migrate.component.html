@@ -29,6 +29,7 @@
           <th>Store Credit</th>
           <th>Access Code</th>
           <th>Orders</th>
+          <th>Remarks</th>
         </tr>
       </thead>
       <tbody>
@@ -51,6 +52,10 @@
                 <div class="col-6">
                   <button type="button" class="btn btn-primary" (click)="onEditStoreCredit(template)">Update</button>
                 </div>
+              </div>
+              <div class="row remarks">
+                <label>Remarks</label>
+                <textarea class="form-control" [formControl]="remarks"></textarea>
               </div>
             </div>
           </td>
@@ -80,6 +85,11 @@
                 </div>
               </div>
             </button>
+          </td>
+          <td>
+            <p *ngFor="let remark of migrateRemarks">
+              {{remark.timeStamp}} {{remark.remarks}}
+            </p>
           </td>
           <ng-template #template>
             <div class="modal-body text-center">

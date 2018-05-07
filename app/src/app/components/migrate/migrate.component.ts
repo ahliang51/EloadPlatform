@@ -15,6 +15,7 @@ export class MigrateComponent implements OnInit {
   accessCode = new FormControl();
   phoneNumber = new FormControl();
   storeCredit = new FormControl();
+  remarks = new FormControl();
   firstName;
   email;
   userPhoneNumber;
@@ -23,6 +24,7 @@ export class MigrateComponent implements OnInit {
   Object = Object; // For looping through orders object
   updateStoreCreditModal: BsModalRef;
   customerEcommerceId;
+  migrateRemarks = [];
 
 
 
@@ -44,7 +46,8 @@ export class MigrateComponent implements OnInit {
 
     this.migrateService.updateStoreCredit({
       storeCredit: this.storeCredit.value,
-      customerEcommerceId: this.customerEcommerceId
+      customerEcommerceId: this.customerEcommerceId,
+      remarks: this.remarks.value
     }).subscribe(data => {
       console.log(data);
       this.updateStoreCreditModal.hide();
@@ -55,7 +58,7 @@ export class MigrateComponent implements OnInit {
           clickToClose: true
         });
       } else {
-        this.notificationService.error('Error', 'Update Fail', {
+        this.notificationService.error('Error', 'Update Fail' + data.message, {
           timeOut: 5000,
           pauseOnHover: false,
           clickToClose: true
@@ -80,8 +83,10 @@ export class MigrateComponent implements OnInit {
       // firstName = data.first
       // console.log(data.result.orderInfo);
       // this.ordersArray.push(data.result.orderInfo);
+      console.log(data);
       if (data.success) {
         this.ordersObject = data.result.orderInfo;
+        this.migrateRemarks = data.result.migrateRemarks;
 
         // for (const key in data.result.orderInfo) {
         //   if (data.result.orderInfo.hasOwnProperty(key)) {

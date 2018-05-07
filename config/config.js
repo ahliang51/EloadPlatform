@@ -15,5 +15,7 @@ module.exports = {
     bigCommerceLogLevel: 'info',
     bigCommerceClientSecret: '8rf7x5amirm0bfn5xxlwuo3tl22zh1i',
 
-    storeImagePath: 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/'
+    storeImagePath: 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/',
+
+    eloadPlatformUser: "Admin",
 }

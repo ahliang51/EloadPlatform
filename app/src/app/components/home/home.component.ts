@@ -54,6 +54,8 @@ export class HomeComponent implements OnInit {
     const batch = {
       batchNo: batchNo
     };
+
+    // this.batchService.getIpAddress().pipe(mergeMap(ipAddress => this.))
     this.batchService.exportBatch(batch).subscribe(data => {
       const batchArray = [];
       for (const temp of data[0]) {

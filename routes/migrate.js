@@ -24,10 +24,13 @@ router.post('/retrieve-user', (req, res, next) => {
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
 
+    db = req.db;
+
     async.waterfall([
         retrieveUserInfo,
         retrieveOrders,
-        retrieveProductInformation
+        retrieveProductInformation,
+        retrieveRemarks
     ], function (err, result) {
         if (err) {
             res.json({
@@ -35,6 +38,7 @@ router.post('/retrieve-user', (req, res, next) => {
                 message: err
             })
         } else {
+            console.log(result)
             res.json({
                 success: true,
                 result: result
@@ -120,36 +124,72 @@ router.post('/retrieve-user', (req, res, next) => {
                 }
                 callback(null, result)
             });
+    }
 
-
-        // for (let order of orderInfo) {
-        //     bigCommerce.get(order.products.resource).then(data => {
-        //         console.log(data)
-        //     })
-        // }
+    function retrieveRemarks(result, callback) {
+        db.collection('users').findOne({
+            customerEcommerceId: result.userInfo.id
+        }).then(data => {
+            result.migrateRemarks = data.migrateTransactions;
+            callback(null, result)
+        })
     }
 });
 
 router.post('/update-store-credit', (req, res, next) => {
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
-    console.log(req.body)
 
-    bigCommerce.put('/customers/' + req.body.userInfo.customerEcommerceId, {
-            store_credit: req.body.userInfo.storeCredit
-        }).then(data => {
+    db = req.db;
+    async.waterfall([
+        updateStoreCredit,
+        insertRemarks
+    ], function (err, result) {
+        if (err) {
             res.json({
+                success: false,
+                message: err
+            })
+        } else {
+            res.json({
+                success: true,
+                result: result
+            })
+        }
+    });
+
+    function updateStoreCredit(callback) {
+        bigCommerce.put('/customers/' + req.body.userInfo.customerEcommerceId, {
+                store_credit: req.body.userInfo.storeCredit
+            }).then(data => {
+                callback(null, data)
+            })
+            .catch(err => {
+                if (err) {
+                    callback({
+                        success: false
+                    })
+                }
+            });
+    }
+
+    function insertRemarks(result, callback) {
+        let timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
+        db.collection('users').update({
+            customerEcommerceId: req.body.userInfo.customerEcommerceId
+        }, {
+            $addToSet: {
+                "migrateTransactions": {
+                    timeStamp: timeStamp,
+                    remarks: req.body.userInfo.remarks
+                }
+            }
+        }).then(result => {
+            callback(null, {
                 success: true
             })
         })
-        .catch(err => {
-            if (err) {
-                res.json({
-                    success: false
-                })
-            }
-        });
-
+    }
 })
 
 
@@ -157,24 +197,11 @@ router.post('/test', (req, res, next) => {
     //Retrieve bigCommerce Connection
     db = req.db;
 
-    let timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
-    console.log(timeStamp)
-
-    db.collection('users').update({
-        customerEcommerceId: 48
-    }, {
-        $set: {
-            "migrateTransactions.1": {
-                timeStamp: timeStamp,
-                originalStoreCredit: "40",
-                updatedStoreCredit: '10',
-            }
-        }
-    }).then(result => {
-        console.log(result)
-        res.json(result)
+    db.collection('users').findOne({
+        customerEcommerceId: 67
+    }).then(data => {
+        res.json(data.migrateTransactions)
     })
-
 })
 
 

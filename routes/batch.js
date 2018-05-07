@@ -7,6 +7,7 @@ let express = require('express'),
     http = require('http'),
     config = require('../config/config'),
     jwt = require('jsonwebtoken'),
+    storedProcedure = require('./stored-procedure'),
     connection;
 
 router.post('/generate-batch', (req, res, next) => {
@@ -127,18 +128,19 @@ router.post('/view-pin-detail', (req, res, next) => {
 
 router.post('/test', (req, res, next) => {
     // webAccessLog("Admin", "102.123.1.1", "qwdqwd", req.connection)
-});
+    connection = req.connection;
+    // console.log("asdasd")
+    // connection.query(`SELECT * FROM TRANSACTIONS`),
+    //     (err, result, fields) => {
+    //         console.log(result)
+    //     }
 
-// function webAccessLog(Admin, ipAddress, description, connection) {
-//     console.log(Admin)
-//     console.log(ipAddress)
-//     console.log(description)
-//     console.log(connection)
-//     connection.query(`CALL WEB_ACCESS_LOG(?,?,?)`, [Admin, ipAddress, description],
-//         (err, result, fields) => {
-//             console.log(result)
-//         })
-// }
+    storedProcedure.insertAccessLog(config.eloadPlatformUser, "192.231.232.232", "TESTING IN PROGRESS", connection)
+        .then(result => {
+            console.log(result)
+        })
+
+});
 
 
 
