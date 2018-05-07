@@ -51,12 +51,15 @@ export class HomeComponent implements OnInit {
   onConfirmExport(batchNo): void {
     this.exportModal.hide();
     console.log(batchNo);
-    const batch = {
-      batchNo: batchNo
-    };
+    // const batch = {
+    //   batchNo: batchNo,
+    //   ipAddress :ip
+    // };
 
-    // this.batchService.getIpAddress().pipe(mergeMap(ipAddress => this.))
-    this.batchService.exportBatch(batch).subscribe(data => {
+    this.batchService.getIpAddress().pipe(mergeMap(ipAddress => this.batchService.exportBatch({
+      batchNo: batchNo,
+      ipAddress: ipAddress.ip
+    }))).subscribe(data => {
       const batchArray = [];
       for (const temp of data[0]) {
         const tempObject = {
@@ -75,64 +78,64 @@ export class HomeComponent implements OnInit {
     this.exportModal.hide();
     this.spinnerService.show();
 
-    // this.batchService.getIpAddress().pipe(mergeMap(ipAddress =>
-    //   this.batchService.printBatch({
-    //     batchNo: batchNo,
-    //     ipAddress: ipAddress
-    //   }))).subscribe(data => {
-    //     console.log(data);
-    //     this.spinnerService.hide();
-    //     this.ngOnInit();
-    //     this.notificationService.success(
-    //       'Success',
-    //       (data[0])[0].STATUS,
-    //       {
-    //         timeOut: 3000,
-    //         pauseOnHover: false,
-    //         clickToClose: true
-    //       }
-    //     );
-    //   });
-
-    const batch = {
-      batchNo: batchNo,
-    };
-
-    this.batchService.printBatch(batch).subscribe(data => {
-      console.log(data);
-      this.spinnerService.hide();
-      this.ngOnInit();
-      this.notificationService.success(
-        'Success',
-        (data[0])[0].STATUS,
-        {
-          timeOut: 3000,
-          pauseOnHover: false,
-          clickToClose: true
-        }
-      );
-    });
+    this.batchService.getIpAddress().pipe(mergeMap(ipAddress =>
+      this.batchService.printBatch({
+        batchNo: batchNo,
+        ipAddress: ipAddress.ip
+      }))).subscribe(data => {
+        console.log(data);
+        this.spinnerService.hide();
+        this.ngOnInit();
+        this.notificationService.success(
+          'Success',
+          (data[0])[0].STATUS,
+          {
+            timeOut: 3000,
+            pauseOnHover: false,
+            clickToClose: true
+          }
+        );
+      });
   }
 
   onConfirmActivate(batchNo): void {
     this.exportModal.hide();
     this.spinnerService.show();
-    const batch = {
-      batchNo: batchNo
-    };
-    this.batchService.activateBatch(batch).subscribe(data => {
-      this.spinnerService.hide();
-      this.ngOnInit();
-      this.notificationService.success(
-        'Success',
-        (data[0])[0].STATUS,
-        {
-          timeOut: 5000,
-          pauseOnHover: false,
-          clickToClose: true
-        }
-      );
-    });
+
+    this.batchService.getIpAddress().pipe(mergeMap(ipAddress =>
+      this.batchService.activateBatch({
+        batchNo: batchNo,
+        ipAddress: ipAddress.ip
+      }))).subscribe(data => {
+        console.log(data);
+        this.spinnerService.hide();
+        this.ngOnInit();
+        this.notificationService.success(
+          'Success',
+          (data[0])[0].STATUS,
+          {
+            timeOut: 3000,
+            pauseOnHover: false,
+            clickToClose: true
+          }
+        );
+      });
+    // const batch = {
+    //   batchNo: batchNo
+    // };
+    // this.batchService.activateBatch(batch).subscribe(data => {
+    //   this.spinnerService.hide();
+    //   this.ngOnInit();
+    //   this.notificationService.success(
+    //     'Success',
+    //     (data[0])[0].STATUS,
+    //     {
+    //       timeOut: 5000,
+    //       pauseOnHover: false,
+    //       clickToClose: true
+    //     }
+    //   );
+    // });
   }
 
   onDecline(): void {

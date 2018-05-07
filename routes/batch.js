@@ -76,26 +76,100 @@ router.get('/list-batch', (req, res, next) => {
 
 router.post('/export-batch', (req, res, next) => {
     connection = req.connection;
-    connection.query(`CALL WEB_EXPORT_BATCH(?)`, req.body.batchNo,
-        (err, result, fields) => {
+
+    async.waterfall([
+        exportBatch,
+        insertAccessLog
+    ], function (err, result) {
+        if (err) {
+            res.json({
+                message: err
+            })
+        } else {
             res.json(result)
-        })
+        }
+    });
+
+    function exportBatch(callback) {
+        connection.query(`CALL WEB_EXPORT_BATCH(?)`, req.body.batchNo,
+            (err, result, fields) => {
+                callback(null, result)
+            })
+    }
+
+    function insertAccessLog(result, callback) {
+        console.log(req.body)
+        storedProcedure.insertAccessLog(config.eloadPlatformUser, req.body.ipAddress, "Export Batch", connection)
+            .then(status => {
+                callback(null, result)
+            })
+    }
 });
 
 router.post('/print-batch', (req, res, next) => {
     connection = req.connection;
-    connection.query(`CALL WEB_PRINT_BATCH(?)`, req.body.batchNo,
-        (err, result, fields) => {
+
+    async.waterfall([
+        printBatch,
+        insertAccessLog
+    ], function (err, result) {
+        if (err) {
+            res.json({
+                message: err
+            })
+        } else {
             res.json(result)
-        })
+        }
+    });
+
+    function printBatch(callback) {
+        connection.query(`CALL WEB_PRINT_BATCH(?)`, req.body.batchNo,
+            (err, result, fields) => {
+                callback(null, result)
+            })
+    }
+
+    function insertAccessLog(result, callback) {
+        console.log(req.body)
+        storedProcedure.insertAccessLog(config.eloadPlatformUser, req.body.ipAddress, "Print Batch", connection)
+            .then(status => {
+                callback(null, result)
+            })
+    }
 });
 
 router.post('/activate-batch', (req, res, next) => {
     connection = req.connection;
-    connection.query(`CALL WEB_ACTIVATE_BATCH(?)`, req.body.batchNo,
-        (err, result, fields) => {
+
+    async.waterfall([
+        activateBatch,
+        insertAccessLog
+    ], function (err, result) {
+        if (err) {
+            res.json({
+                message: err
+            })
+        } else {
             res.json(result)
-        })
+        }
+    });
+
+    function activateBatch(callback) {
+        connection.query(`CALL WEB_ACTIVATE_BATCH(?)`, req.body.batchNo,
+            (err, result, fields) => {
+                callback(null, result)
+            })
+    }
+
+
+    function insertAccessLog(result, callback) {
+        console.log(req.body)
+        storedProcedure.insertAccessLog(config.eloadPlatformUser, req.body.ipAddress, "Activate Batch", connection)
+            .then(status => {
+                callback(null, result)
+            })
+    }
+
 });
 
 router.post('/list-voucher', (req, res, next) => {
