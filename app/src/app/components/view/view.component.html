@@ -1,19 +1,21 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col">
-      <mat-form-field *ngIf="true">
-        <input matInput [matDatepicker]="start" placeholder="Choose a date" [formControl]="startDate">
-        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-        <mat-datepicker #start disabled="false"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div class="col">
-      <mat-form-field>
-        <input matInput [matDatepicker]="end" placeholder="End Date" [formControl]="endDate">
-        <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-        <mat-datepicker #end disabled="false"></mat-datepicker>
-      </mat-form-field>
+    <div class="col-3">
+      <div class="col">
+        <mat-form-field *ngIf="true">
+          <input matInput [matDatepicker]="start" placeholder="Choose a date" [formControl]="startDate">
+          <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+          <mat-datepicker #start disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [matDatepicker]="end" placeholder="End Date" [formControl]="endDate">
+          <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+          <mat-datepicker #end disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
 
     <div class="col">
@@ -26,6 +28,10 @@
 
     <div class="col">
       <input class="form-control" type="text" placeholder="Pin Number" [formControl]="pinNumber">
+    </div>
+
+    <div class="col">
+      <input class="form-control" type="text" placeholder="Serial Number" [formControl]="serialNumber">
     </div>
 
     <div class="col">

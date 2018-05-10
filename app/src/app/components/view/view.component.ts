@@ -41,6 +41,7 @@ export class ViewComponent implements OnInit {
   accessCode = new FormControl();
   phoneNumber = new FormControl();
   pinNumber = new FormControl();
+  serialNumber = new FormControl();
   transactionArray = [];
 
   constructor(private batchService: BatchService) { }
@@ -64,26 +65,32 @@ export class ViewComponent implements OnInit {
     //     console.log(result[0]);
     //   });
     // } else {
-    // tslint:disable-next-line:max-line-length
-    this.batchService.viewTransactions(startDate, endDate, this.accessCode.value ? this.accessCode.value : '', this.phoneNumber.value ? this.phoneNumber.value : '', this.pinNumber.value ? this.pinNumber.value : '').subscribe(data => {
-      console.log(data[0].sort((a, b) => {
-        if (a.TRX_ID > b.TRX_ID) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }));
-      this.transactionArray = data[0];
-      console.log(this.transactionArray);
-      console.log(this.transactionArray.length);
-      if (this.transactionArray.length === 0) {
-        this.batchService.viewPinDetails(this.pinNumber.value).subscribe(result => {
-          this.transactionArray = result[0];
-          console.log(result[0]);
-        });
-      }
-    });
-    // }
+    if (this.pinNumber.value) {
+      this.batchService.viewPinDetails(this.pinNumber.value).subscribe(result => {
+        this.transactionArray = result[0];
+        console.log(result[0]);
+      });
+    } else if (this.serialNumber.value) {
+      this.batchService.viewSerialDetails(this.serialNumber.value).subscribe(result => {
+        this.transactionArray = result[0];
+        console.log(result[0]);
+      });
+    } else {
+      // tslint:disable-next-line:max-line-length
+      this.batchService.viewTransactions(startDate, endDate, this.accessCode.value ? this.accessCode.value : '', this.phoneNumber.value ? this.phoneNumber.value : '', this.pinNumber.value ? this.pinNumber.value : '').subscribe(data => {
+        console.log(data[0].sort((a, b) => {
+          if (a.TRX_ID > b.TRX_ID) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }));
+        this.transactionArray = data[0];
+        console.log(this.transactionArray);
+        console.log(this.transactionArray.length);
+
+      });
+    }
   }
 }
 

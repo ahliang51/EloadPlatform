@@ -75,4 +75,13 @@ export class BatchService {
     }, { headers: headers })
       .map(res => res.json());
   }
+
+  viewSerialDetails(serialNumber) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.serverUrl + '/batch/view-serial-detail', {
+      serialNumber: serialNumber
+    }, { headers: headers })
+      .map(res => res.json());
+  }
 }

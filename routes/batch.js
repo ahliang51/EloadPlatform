@@ -199,7 +199,17 @@ router.post('/view-transactions', (req, res, next) => {
 
 router.post('/view-pin-detail', (req, res, next) => {
     connection = req.connection;
-    connection.query(`SELECT * FROM VOUCHERS INNER JOIN BATCH ON VOUCHERS.BATCH_NO = BATCH.BATCH_NO  WHERE PIN_NO = (?)`, req.body.pinNumber,
+    connection.query(`SELECT * FROM VOUCHERS INNER JOIN BATCH ON VOUCHERS.BATCH_NO = BATCH.BATCH_NO INNER JOIN TRANSACTIONS ON VOUCHERS.SERIAL_NO = TRANSACTIONS.SERIAL_NO WHERE VOUCHERS.PIN_NO = (?)`, req.body.pinNumber,
+        (err, result, fields) => {
+            let resultArray = [];
+            resultArray.push(result)
+            res.json(resultArray)
+        })
+});
+
+router.post('/view-serial-detail', (req, res, next) => {
+    connection = req.connection;
+    connection.query(`SELECT * FROM VOUCHERS INNER JOIN BATCH ON VOUCHERS.BATCH_NO = BATCH.BATCH_NO INNER JOIN TRANSACTIONS ON VOUCHERS.SERIAL_NO = TRANSACTIONS.SERIAL_NO  WHERE VOUCHERS.SERIAL_NO = (?)`, req.body.serialNumber,
         (err, result, fields) => {
             let resultArray = [];
             resultArray.push(result)
@@ -208,19 +218,13 @@ router.post('/view-pin-detail', (req, res, next) => {
 });
 
 router.post('/test', (req, res, next) => {
-    // webAccessLog("Admin", "102.123.1.1", "qwdqwd", req.connection)
     connection = req.connection;
-    // console.log("asdasd")
-    // connection.query(`SELECT * FROM TRANSACTIONS`),
-    //     (err, result, fields) => {
-    //         console.log(result)
-    //     }
-
-    storedProcedure.insertAccessLog(config.eloadPlatformUser, "192.231.232.232", "TESTING IN PROGRESS", connection)
-        .then(result => {
-            console.log(result)
+    connection.query(`SELECT * FROM VOUCHERS INNER JOIN BATCH ON VOUCHERS.BATCH_NO = BATCH.BATCH_NO INNER JOIN TRANSACTIONS ON VOUCHERS.SERIAL_NO = TRANSACTIONS.SERIAL_NO  WHERE VOUCHERS.SERIAL_NO = (?)`, req.body.serialNumber,
+        (err, result, fields) => {
+            let resultArray = [];
+            resultArray.push(result)
+            res.json(resultArray)
         })
-
 });
 
 
