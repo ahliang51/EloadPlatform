@@ -2,12 +2,14 @@
   margin-top: 5%;
 }
 
-.migrate-table {
-  margin-top: 5%;
+.migrate-data {
+  border-style: solid;
+  border-width: 0.1px;
 }
 
 .container {
   margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .remarks {

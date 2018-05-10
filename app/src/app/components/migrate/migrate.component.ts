@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-migrate',
@@ -37,18 +38,28 @@ export class MigrateComponent implements OnInit {
   }
 
   onEditStoreCredit(template: TemplateRef<any>) {
-    this.updateStoreCreditModal = this.modalService.show(template, { class: 'modal-sm' });
+    if (this.remarks.value) {
+      this.updateStoreCreditModal = this.modalService.show(template, { class: 'modal-sm' });
+    } else {
+      this.notificationService.error('Error', 'Please input some remarks', {
+        timeOut: 5000,
+        pauseOnHover: false,
+        clickToClose: true
+      });
+    }
   }
 
   onConfirm(): void {
     console.log(this.storeCredit.value);
     console.log(this.customerEcommerceId);
 
-    this.migrateService.updateStoreCredit({
+
+    this.migrateService.getIpAddress().pipe(mergeMap(ipAddress => this.migrateService.updateStoreCredit({
       storeCredit: this.storeCredit.value,
       customerEcommerceId: this.customerEcommerceId,
-      remarks: this.remarks.value
-    }).subscribe(data => {
+      remarks: this.remarks.value,
+      ipAddress: ipAddress.ip
+    }))).subscribe(data => {
       console.log(data);
       this.updateStoreCreditModal.hide();
       if (data.success) {
@@ -65,6 +76,27 @@ export class MigrateComponent implements OnInit {
         });
       }
     });
+    // this.migrateService.updateStoreCredit({
+    //   storeCredit: this.storeCredit.value,
+    //   customerEcommerceId: this.customerEcommerceId,
+    //   remarks: this.remarks.value
+    // }).subscribe(data => {
+    //   console.log(data);
+    //   this.updateStoreCreditModal.hide();
+    //   if (data.success) {
+    //     this.notificationService.success('Success', 'Store Credit has been updated', {
+    //       timeOut: 5000,
+    //       pauseOnHover: false,
+    //       clickToClose: true
+    //     });
+    //   } else {
+    //     this.notificationService.error('Error', 'Update Fail' + data.message, {
+    //       timeOut: 5000,
+    //       pauseOnHover: false,
+    //       clickToClose: true
+    //     });
+    //   }
+    // });
   }
 
   onDecline(): void {

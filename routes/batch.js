@@ -63,6 +63,13 @@ router.post('/generate-batch', (req, res, next) => {
                 }
             });
     }
+
+    function insertAccessLog(result, callback) {
+        storedProcedure.insertAccessLog(config.eloadPlatformUser, req.body.ipAddress, "Generate Batch", connection)
+            .then(status => {
+                callback(null, result)
+            })
+    }
 });
 
 

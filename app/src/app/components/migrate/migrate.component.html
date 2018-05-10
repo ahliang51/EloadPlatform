@@ -19,8 +19,109 @@
       <button type="button" class="btn btn-primary access-code" (click)="onFind()">Find</button>
     </div>
   </div>
-  <div class="row">
-    <table class="table table-bordered migrate-table">
+  <div class="row migrate-data" style="margin-top:5%">
+    <div class="col migrate-data">
+      <th>First Name</th>
+    </div>
+    <div class="col migrate-data">
+      {{firstName}}
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Email</th>
+    </div>
+    <div class="col migrate-data">
+      {{email}}
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Phone Number</th>
+    </div>
+    <div class="col migrate-data">
+      {{userPhoneNumber}}
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Store Credit</th>
+    </div>
+    <div class="col migrate-data">
+      <!-- {{email}} -->
+      <div class="container" *ngIf="storeCredit.value">
+        <div class="row">
+          <div class="col-6">
+            <input class="form-control" type="text" [formControl]="storeCredit">
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-primary" (click)="onEditStoreCredit(template)">Update</button>
+          </div>
+        </div>
+        <div class="row remarks" style="margin-bottom : 5%">
+          <label>Remarks</label>
+          <textarea class="form-control" [formControl]="remarks"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Access Code</th>
+    </div>
+    <div class="col migrate-data">
+      {{userAccessCode}}
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Orders</th>
+    </div>
+    <div class="col migrate-data">
+      {{orders}}
+      <button [attr.data-target]="'#' + order" class="btn btn-primary container" data-toggle="collapse" *ngFor="let order of Object.keys(ordersObject).slice().reverse()">
+        Order ID : {{order}}
+        <div [attr.id]="order" class="collapse">
+          <div class="row" *ngFor="let item of ordersObject[order];let last = last">
+            <div class="container">
+              <p>
+                {{item.name}} X {{item.quantity}}
+              </p>
+              <div *ngIf="last">
+                <p>
+                  Date Created : {{item.date_created | date:'fullDate'}}
+                </p>
+                <p>
+                  Total : {{item.total | currency}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+  <div class="row migrate-data">
+    <div class="col migrate-data">
+      <th>Remarks</th>
+    </div>
+    <div class="col migrate-data">
+      <p *ngFor="let remark of migrateRemarks.reverse()">
+        {{remark.timeStamp}} : {{remark.remarks}}
+      </p>
+    </div>
+  </div>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Are u sure?</p>
+    <button type="button" class="btn btn-default" (click)="onConfirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="onDecline()">No</button>
+  </div>
+</ng-template>
+
+
+<!-- <table class="table table-bordered migrate-table">
       <thead>
         <tr>
           <th>First Name</th>
@@ -100,6 +201,4 @@
           </ng-template>
         </tr>
       </tbody>
-    </table>
-  </div>
-</div>
+    </table> -->

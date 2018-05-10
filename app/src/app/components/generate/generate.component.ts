@@ -6,6 +6,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Router } from '@angular/router';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { mergeMap } from 'rxjs/operators';
 
 import * as _moment from 'moment';
 
@@ -47,7 +48,7 @@ export class GenerateComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-    private generateService: BatchService,
+    private batchService: BatchService,
     private notificationService: NotificationsService,
     private spinnerService: Ng4LoadingSpinnerService,
     private router: Router) { }
@@ -92,15 +93,17 @@ export class GenerateComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       const expiryDate = `${this.expiryDate.value._d.getFullYear()}-${this.expiryDate.value._d.getMonth() + 1}-${this.expiryDate.value._d.getDate()}`;
       console.log(expiryDate);
-      const generate = {
+
+
+      this.batchService.getIpAddress().pipe(mergeMap(ipAddress => this.batchService.generate({
         batchName: this.generateForm.controls.batchName.value,
         header: this.generateForm.controls.header.value,
         quantity: this.generateForm.controls.quantity.value,
         amount: this.generateForm.controls.amount.value,
         expiryDate: expiryDate,
-        token: localStorage.getItem('token')
-      };
-      this.generateService.generate(generate).subscribe(data => {
+        token: localStorage.getItem('token'),
+        ipAddress: ipAddress.ip
+      }))).subscribe(data => {
         if (data.success) {
           this.notificationService.success('Success', 'Successfully Generated', {
             timeOut: 5000,
@@ -111,6 +114,26 @@ export class GenerateComponent implements OnInit {
           this.spinnerService.hide();
         }
       });
+
+      // const generate = {
+      //   batchName: this.generateForm.controls.batchName.value,
+      //   header: this.generateForm.controls.header.value,
+      //   quantity: this.generateForm.controls.quantity.value,
+      //   amount: this.generateForm.controls.amount.value,
+      //   expiryDate: expiryDate,
+      //   token: localStorage.getItem('token')
+      // };
+      // this.generateService.generate(generate).subscribe(data => {
+      //   if (data.success) {
+      //     this.notificationService.success('Success', 'Successfully Generated', {
+      //       timeOut: 5000,
+      //       pauseOnHover: false,
+      //       clickToClose: true
+      //     });
+      //     this.router.navigate(['/home']);
+      //     this.spinnerService.hide();
+      //   }
+      // });
 
     } else {
       console.log(this.generateForm.controls.batchName.errors);

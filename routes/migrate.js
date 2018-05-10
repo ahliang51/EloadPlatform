@@ -8,6 +8,7 @@ let express = require('express'),
     config = require('../config/config'),
     jwt = require('jsonwebtoken'),
     moment = require('moment'),
+    storedProcedure = require('./stored-procedure'),
     db, bigCommerce, bigCommerceV3, connection;
 
 // Group by Function
@@ -143,7 +144,8 @@ router.post('/update-store-credit', (req, res, next) => {
     db = req.db;
     async.waterfall([
         updateStoreCredit,
-        insertRemarks
+        insertRemarks,
+        insertAccessLog
     ], function (err, result) {
         if (err) {
             res.json({
@@ -189,6 +191,14 @@ router.post('/update-store-credit', (req, res, next) => {
                 success: true
             })
         })
+    }
+
+    function insertAccessLog(result, callback) {
+        connection = req.connection;
+        storedProcedure.insertAccessLog(config.eloadPlatformUser, req.body.ipAddress, "Update Store Credit", connection)
+            .then(status => {
+                callback(null, result)
+            })
     }
 })
 
